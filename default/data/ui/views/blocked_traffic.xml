@@ -11,6 +11,7 @@
     </input>
     <input type="dropdown" token="sourcetype" searchWhenChanged="true">
       <label>Select your sourcetype</label>
+      <selectFirstChoice>true</selectFirstChoice>
       <search>
         <query>index=homemonitor |  top 2 sourcetype</query>
         <earliest>-15m</earliest>
@@ -25,7 +26,7 @@
       <table>
         <title>List of Bad Domains (Blocked)</title>
         <search>
-          <query>index=homemonitor sourcetype=$sourcetype$ action2=BLOCK | where NOT `src_ip_private_ip` |lookup dnslookup clientip as src_ip OUTPUT clienthost | rex field=clienthost "(?&lt;Domain&gt;(\d{1,3}.\d{1,3}?|[^\.\s]+?)\.([^\.\s]{1,3}|[^\.\s]{1,3}\.[^\.\s]{1,3}))$$" | stats count as Attempts values(src_port) as "Source Ports" by Domain, protocol  | sort -Attempts</query>
+          <query>index=homemonitor sourcetype=$sourcetype$ action2=BLOCK | where NOT `src_ip_private_ip` |lookup dnslookup clientip as src_ip OUTPUT clienthost | rex field=clienthost "(?&lt;Domain&gt;(\d{1,3}.\d{1,3}?|[^\.\s]+?)\.([^\.\s]{1,3}|[^\.\s]{1,3}\.[^\.\s]{1,3}))$$" | stats count as Attempts values(dest_port) as "Destination Ports" by Domain, protocol  | sort -Attempts</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
         </search>
@@ -144,7 +145,7 @@
       <chart>
         <title>Top Port Requests (Out Bound)</title>
         <search>
-          <query>index=homemonitor sourcetype=$sourcetype$  direction=out | top limit=10 src_port</query>
+          <query>index=homemonitor sourcetype=$sourcetype$ | where NOT `dest_ip_private_ip` | top limit=10 dest_port</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
         </search>
