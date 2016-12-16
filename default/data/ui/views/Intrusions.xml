@@ -12,6 +12,7 @@
     </input>
     <input type="dropdown" token="sourcetype" searchWhenChanged="true">
       <label>Sourcetype</label>
+      <selectFirstChoice>true</selectFirstChoice>
       <search>
         <query>index=homemonitor | top 2 sourcetype</query>
         <earliest>-60m@m</earliest>
