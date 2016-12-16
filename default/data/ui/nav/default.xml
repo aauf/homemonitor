@@ -24,7 +24,7 @@
        <view name="network_overview_in_bound_traffic" />
        <view name="network_overview_out_bound_traffic" />
   	 </collection>
-  	<collection label="Device Specific Dashbaords">
+  	<collection label="Device Specific Dashboards">
   	<collection label="FiOS Specific Dashboards">
     <view name="fios_router_configurations" />
   	</collection>
